@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.widget.SeekBar;
 
 import com.xxmassdeveloper.mpchartexample.view.DMJSView;
+import com.xxmassdeveloper.mpchartexample.view.Forecast2WsView;
 import com.xxmassdeveloper.mpchartexample.view.HistogramView;
 import com.xxmassdeveloper.mpchartexample.view.StatscsView;
 import com.xxmassdeveloper.mpchartexample.view.viewbeen.Wsbyinfo;
@@ -21,7 +22,7 @@ public class TestActivity extends AppCompatActivity {
     DMJSView wsby_dmjsview;
     private ArrayList<Wsbyinfo> tmpL = null;
 
-
+    Forecast2WsView f2wsw;
     List<HistogramView.Histogram> list = new ArrayList<>();
 
     @Override
@@ -29,16 +30,20 @@ public class TestActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test);
 
-        statscsView = (StatscsView) this.findViewById(R.id.statscsView1);
-        histogram = (HistogramView) this.findViewById(R.id.histogram);
-//        statscsView.uodateAirIndex(airIndex);
-        histogram.setData(getdata(list));
+//        statscsView = (StatscsView) this.findViewById(R.id.statscsView1);
+//        histogram = (HistogramView) this.findViewById(R.id.histogram);
+////        statscsView.uodateAirIndex(airIndex);
+//        histogram.setData(getdata(list));
+//
+////        8.6
+//        wsby_dmjsview = (DMJSView) findViewById(R.id.wsby_dmjsview);
+//        initData();
+//        wsby_dmjsview.setTmpL(tmpL);
 
-//        8.6
-        wsby_dmjsview = (DMJSView) findViewById(R.id.wsby_dmjsview);
-        initData();
-        wsby_dmjsview.setTmpL(tmpL);
-
+        f2wsw = findViewById(R.id.f2wsw);
+        nativeData();
+//        setData(tmpL);
+        f2wsw.setTmpL(tmpL);
     }
 
     private List<HistogramView.Histogram> getdata(List<HistogramView.Histogram> list) {
@@ -121,4 +126,53 @@ public class TestActivity extends AppCompatActivity {
     }
 
 
+    private void setData(ArrayList<Wsbyinfo> tmpL) {
+        ArrayList<Wsbyinfo> wsbyList = new ArrayList<>();
+        Wsbyinfo xb = new Wsbyinfo("西北");
+        double fMaximumOutput = 0;
+        double fMinimumOutput = 0;
+        double fActualOutput = 0;
+        for (Wsbyinfo wsbyinfo : tmpL) {
+            fMaximumOutput += wsbyinfo.getFMaximumOutput();
+            fMinimumOutput += wsbyinfo.getFMinimumOutput();
+            fActualOutput += wsbyinfo.getFActualOutput();
+        }
+        xb.setFMaximumOutput(fMaximumOutput);
+        xb.setFMinimumOutput(fMinimumOutput);
+        xb.setFActualOutput(fActualOutput);
+        wsbyList.add(xb);
+        wsbyList.addAll(tmpL);
+        f2wsw.setTmpL(wsbyList);
+//        f2wsw.requestLayout();
+    }
+
+    private void nativeData() {
+        if (tmpL == null) tmpL = new ArrayList<>();
+        if (tmpL.size() != 0) tmpL.clear();
+        Wsbyinfo sx = new Wsbyinfo("陕西");
+        sx.setFMaximumOutput(4490);
+        sx.setFMinimumOutput(3516);
+        sx.setFActualOutput(16522);
+        tmpL.add(sx);
+        Wsbyinfo gs = new Wsbyinfo("甘肃");
+        gs.setFMaximumOutput(351);
+        gs.setFMinimumOutput(3929);
+        gs.setFActualOutput(11565);
+        tmpL.add(gs);
+        Wsbyinfo qh = new Wsbyinfo("青海");
+        qh.setFMaximumOutput(6273);
+        qh.setFMinimumOutput(625);
+        qh.setFActualOutput(7118);
+        tmpL.add(qh);
+        Wsbyinfo nx = new Wsbyinfo("宁夏");
+        nx.setFMaximumOutput(3081);
+        nx.setFMinimumOutput(3828);
+        nx.setFActualOutput(17433);
+        tmpL.add(nx);
+        Wsbyinfo xj = new Wsbyinfo("新疆");
+        xj.setFMaximumOutput(4800);
+        xj.setFMinimumOutput(1411);
+        xj.setFActualOutput(27284);
+        tmpL.add(xj);
+    }
 }
