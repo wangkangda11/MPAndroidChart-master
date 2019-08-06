@@ -3,19 +3,29 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:background="#000"
     android:layout_height="match_parent"
     >
 
     <com.xxmassdeveloper.mpchartexample.view.HistogramView
-        android:visibility="gone"
+android:visibility="gone"
+      android:id="@+id/histogram"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
+        android:background="#fff"
         tools:ignore="MissingConstraints" />
 
     <com.xxmassdeveloper.mpchartexample.view.StatscsView
+        android:visibility="gone"
         android:id="@+id/statscsView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        tools:ignore="MissingConstraints" />
+
+    <com.xxmassdeveloper.mpchartexample.view.DMJSView
+        android:id="@+id/wsby_dmjsview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         tools:ignore="MissingConstraints" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

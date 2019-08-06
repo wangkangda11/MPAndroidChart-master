@@ -11,6 +11,7 @@ import android.view.View;
 import androidx.annotation.ColorInt;
 import androidx.annotation.Nullable;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -137,8 +138,8 @@ public class HistogramView  extends View {
             int green = (int) (Math.random() * 255);
             int blue = (int) (Math.random() * 255);
             @ColorInt int color = Color.rgb(red, green, blue);
-            histogramPaint.setColor(color);
-            textPaint.setColor(color);
+            histogramPaint.setColor(histogram.color);
+            textPaint.setColor(Color.parseColor("#000000"));
             histogramPaint.setStrokeWidth(histogram.valueWidth / wScalSize);
 
             if (pWidth == startX) {//第一次柱状图位置，宽度减半
@@ -150,13 +151,37 @@ public class HistogramView  extends View {
             //柱状图
             canvas.drawLine(pWidth / wScalSize, (startY + verticalLineHight) / hScalSize, pWidth / wScalSize, (startY + verticalLineHight - histogram.value) / hScalSize, histogramPaint);
             //获取设置的文字大小
-            float size = textPaint.getTextSize();
+            float size = 20;//textPaint.getTextSize()
             //按比例缩放文字
             textPaint.setTextSize(size / wScalSize);
             //绘制底部文字
             canvas.drawText(histogram.valueName, pWidth / wScalSize, (startY + verticalLineHight) / hScalSize + 2 * (size / wScalSize), textPaint);
             //绘制顶部文字
-            canvas.drawText(String.valueOf(histogram.value), pWidth / wScalSize, (startY + verticalLineHight - histogram.value) / hScalSize - (size / wScalSize), textPaint);
+            canvas.drawText(histogram.value+"", pWidth / wScalSize, (startY + verticalLineHight - histogram.value) / hScalSize - (size / wScalSize), textPaint);
+
+            //柱状图2
+
+            histogramPaint.setColor(Color.parseColor("#9538322B"));
+            textPaint.setColor(Color.parseColor("#000000"));
+            histogramPaint.setStrokeWidth(histogram.valueWidth / wScalSize);
+
+//            if (pWidth == startX) {//第一次柱状图位置，宽度减半
+//                pWidth += histogram.spaceWidth + histogram.valueWidth / 2;
+//            } else
+//                pWidth += histogram.spaceWidth + histogram.valueWidth;
+            canvas.drawLine(pWidth / wScalSize, (startY + verticalLineHight - histogram.value) / hScalSize, pWidth / wScalSize, (startY + verticalLineHight- histogram.value1) / hScalSize, histogramPaint);
+            //获取设置的文字大小
+            float size1 = 20;//textPaint.getTextSize()
+            //按比例缩放文字
+            textPaint.setTextSize(size1 / wScalSize);
+            //绘制底部文字
+            canvas.drawText(histogram.valueName, pWidth / wScalSize, (startY + verticalLineHight) / hScalSize + 2 * (size1 / wScalSize), textPaint);
+
+            NumberFormat nf = NumberFormat.getPercentInstance();
+
+            //绘制顶部文字
+            canvas.drawText(histogram.value1+"", pWidth / wScalSize, (startY + verticalLineHight - histogram.value1) / hScalSize - (size1 / wScalSize), textPaint);
+            canvas.drawText("("+nf.format(histogram.value/histogram.value1)+")", pWidth / wScalSize, (startY + verticalLineHight - histogram.value1) / hScalSize - (size1 / wScalSize), textPaint);
 
         }
     }
@@ -175,6 +200,14 @@ public class HistogramView  extends View {
          * 柱状图高度数值
          */
         private float value = 0;
+
+        /**
+         * 柱状图高度预定数值
+         */
+        private float value1 = 0;
+
+
+
         /**
          * 柱状图数值对应名称
          */
@@ -187,6 +220,12 @@ public class HistogramView  extends View {
          * 柱状图间距 不设置可使用默认值50
          */
         private int spaceWidth = 50;
+        /**
+         * 颜色
+         */
+        private int color = 50;
+
+
 
         public Histogram() {
 
@@ -212,6 +251,16 @@ public class HistogramView  extends View {
             this.valueWidth = valueWidth;
             this.spaceWidth = spaceWidth;
         }
+
+        public Histogram(float value, float value1, String valueName, int valueWidth, int spaceWidth, int color) {
+            this.value = value;
+            this.value1 = value1;
+            this.valueName = valueName;
+            this.valueWidth = valueWidth;
+            this.spaceWidth = spaceWidth;
+            this.color = color;
+        }
+
         public float getValue() {
             return value;
         }
@@ -241,6 +290,23 @@ public class HistogramView  extends View {
 
         public void setSpaceWidth(int spaceWidth) {
             this.spaceWidth = spaceWidth;
+        }
+
+        public float getValue1() {
+            return value1;
+        }
+
+        public void setValue1(float value1) {
+            this.value1 = value1;
+        }
+
+
+        public int getColor() {
+            return color;
+        }
+
+        public void setColor(int color) {
+            this.color = color;
         }
     }
 
